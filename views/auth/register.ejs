@@ -1,0 +1,67 @@
+<%- include('../_layouts/header.ejs') %>
+    <body class="bg-primary">
+        <div id="layoutAuthentication">
+            <div id="layoutAuthentication_content">
+                <main>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-7">
+                                <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                    <div class="card-header"><h3 class="text-center font-weight-light my-4">Inscription</h3></div>
+                                    <div class="card-body">
+                                        <form method="POST" action="/user/register">
+                                            <div class="form-row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="small mb-1" for="inputFirstName">Nom</label>
+                                                        <input class="form-control py-4" name="nom"  id="inputFirstName" type="text" placeholder="Entrez votre nom" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="small mb-1" for="inputLastName">Postnom</label>
+                                                        <input class="form-control py-4"  name="postnom" id="inputLastName" type="text" placeholder="Entrez votre postnom" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="small mb-1" for="inputLastName">Prenom</label>
+                                                        <input class="form-control py-4" id="inputLastName"  name="prenom" type="text" placeholder="Entrez votre prenom" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="form-row">
+                                                        <label class="small mb-1" for="inputConfirmPassword">Telephone</label>
+                                                        <input class="form-control py-4" id="inputConfirmPassword" name="telephone" type="text" placeholder="Telephone" />
+                                                  
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="small mb-1" for="inputPassword">Mot de passe</label>
+                                                        <input class="form-control py-4" id="inputPassword" type="password" name="passwords" placeholder="Entrez votre mot de passe" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="small mb-1" for="inputConfirmPassword">Mot de passe de confirmation</label>
+                                                        <input class="form-control py-4" id="inputConfirmPassword" type="password" name="password_confirm" placeholder="Confirmez votre mot de passe" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group mt-4 mb-0"><button  class="btn btn-primary btn-block" >S'inscrire</button></div>
+                                        </form>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <div class="small"><a href="login">Vous avez deja un compte? Connectez  vous</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+            <div id="layoutAuthentication_footer">
+                
+<%- include('../_layouts/footer.ejs') %>
