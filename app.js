@@ -85,6 +85,10 @@ app.get('*', function (req, res, next) {
   next();
 });
 
+app.get('/', (req, res) =>{
+  res.redirect('/home');
+});
+
 // Routes
 const indexRoutes = require('./routes/index');
 const usersRouter = require('./routes/user');
