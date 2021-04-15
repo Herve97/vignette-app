@@ -58,26 +58,26 @@ exports.register = (req, res) => {
     if (user) {
       console.log('Email or Username already exists' );
       res.render('auth/register', {
-        postnom,
-        prenom,
-        nom,
-        telephone,
-        email,
-        password,
+        postnom: postnom,
+        prenom: prenom,
+        nom: nom,
+        telephone: telephone,
+        email: email,
+        password: password,
       });
     } else {
       const newUser = new User({
-        postnom,
-        prenom,
-        nom,
-        telephone,
-        email,
-        password,
+        postnom: postnom,
+        prenom: prenom,
+        nom: nom,
+        telephone: telephone,
+        email: email,
+        password: password,
       });
 
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(newUser.password, salt, (err, hash) => {
-          if (err) throw err;
+          if (err) throw err.message;
           newUser.password = hash;
           newUser
             .save()

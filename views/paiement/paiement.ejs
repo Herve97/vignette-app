@@ -1,13 +1,47 @@
 <%- include('../_layouts/header.ejs') %>
 
-<body>
-  <div>
-    <h1> <%= response %>  </h1>
-  </div>
-</body>
+<body class="sb-nav-fixed" style="margin-top:20px;">
+
+  <%- include('../_layouts/navbar.ejs') %>
+    <div id="layoutSidenav">
+      <%- include('../_layouts/sidebar.ejs') %>
+        <div id="layoutSidenav_content">
+          <main>
+
+            <div class="container-fluid">
+
+              <table id="tabdata" class="table table-striped table-bordered" style="width:100%; margin-top:20px;">
+
+                <thead>
+                  <tr>
+                    <th scope="col">N° plaque</th>
+                    <th scope="col">Coût</th>
+                    <th scope="col">Devise</th>
+                    <th scope="col">Référence Paiement</th>
+                    <th scope="col">Date Paiement</th>
+                    <th scope="col">Statut Paiement</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+
+                  <% result.forEach(function(paiement) { %>
+                    <tr>
+                      <td> <%= paiement.num_plaque %> </td>
+                      <td> <%= paiement.cout %> </td>
+                      <td> <%= paiement.currency %> </td>
+                      <td> <%= paiement.refPaiement %> </td>
+                      <td> <%= new Date(paiement.date_paiement).toLocaleDateString() %> </td>
+                      <td> <%= paiement.statut %> </td>
+                    </tr>
+                  <% }); %>
+
+                </tbody>
+
+              </table>
+
+            </div>
+
+          </main>
 
 <%- include('../_layouts/footer.ejs') %>
-
-<!--form action="payement" method="post">
-      <button type="submit">Payer maintenant</button>
-    </form-->

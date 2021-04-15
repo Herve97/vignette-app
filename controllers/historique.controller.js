@@ -1,6 +1,30 @@
 const helper = require('../middleware/paypalHelper');
 const Vehicule = require('../models/Vehicule');
 const User = require('../models/User');
+const Historique = require('../models/Historique_transaction');
+
+// GET paiement by User
+exports.getPaiement = async (req, res, next) => {
+  userData = req.session.passport;
+
+  let foundUserId = await User.findById({
+    _id: userData.user
+  });
+
+  // let foundVehiculeUser = await Vehicule.find({ idUser: foundUserId});
+
+  await Historique.find({idUser: foundUserId}).then((result)=>{
+    res.status(200).render('paiement/paiement', { result: result});
+  }).catch((error)=>{
+    res.status(500).json({
+      message : "Error occured on get Paiement",
+      error: error
+    });
+
+  });
+
+}
+
 
 // POST Add Payement
 exports.paynow = async (req, res, next) => {
@@ -45,13 +69,17 @@ exports.execute = (req, res, next) => {
     userInfo.statut = "success";
     console.log("User info execute ", userInfo);
     helper.getResponse(userInfo, PayerID, function (response) {
-      res.render('paiement/paiement', {
-        response: response.message
-      });
+      res.redirect('/home');
     });
   }
 
 }
+
+/*
+  res.render('paiement/paiement', {
+        response: response
+      });
+*/
 
 // GET cancel Payement
 exports.cancel = (req, res, next) => {

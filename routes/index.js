@@ -12,7 +12,7 @@ router.get('/home', auth.ensureAuthenticated, async function(req, res){
     });
     // console.log(foundUserId);
     await Vehicule.find({ idUser: foundUserId}).then((result) =>{
-        res.status(200).render('index', { result: result});;
+        res.status(200).render('index', { result: result});
         //res.render('index', {template: "home"});
     }).catch((error)=>{
         res.status(500).json({
@@ -21,6 +21,7 @@ router.get('/home', auth.ensureAuthenticated, async function(req, res){
         });
     });
 
+    // let dt = new Date().toLocaleDateString()
     
 });
 

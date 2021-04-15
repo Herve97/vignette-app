@@ -40,7 +40,7 @@ exports.postVehicule = async (req, res, next) => {
             type: type,
             puissance: puissance,
             couleur: couleur,
-            annee_fabrication: Date.parse(annee_fabrication),
+            annee_fabrication: annee_fabrication,
             num_chassis: num_chassis,
             prix: puissance * 5
         });
