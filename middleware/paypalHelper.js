@@ -58,8 +58,8 @@ const self = {
 				"payment_method": "paypal"
 			},
 			"redirect_urls": {
-				"return_url": "http://localhost:3000/paiement/execute",
-				"cancel_url": "http://localhost:3000/paiement/cancel"
+				"return_url": "https://vignette-new-app.herokuapp.com/paiement/execute",
+				"cancel_url": "https://vignette-new-app.herokuapp.com/paiement/cancel"
 			},
 			"transactions": [{
 				"amount": {
