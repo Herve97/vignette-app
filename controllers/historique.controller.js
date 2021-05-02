@@ -214,7 +214,7 @@ exports.execute = (req, res, next) => {
     userInfo.statut = "success";
     console.log("User info execute ", userInfo);
     helper.getResponse(userInfo, PayerID, function (response) {
-      res.redirect('http://localhost:3000/paiement/vignette');
+      res.redirect('https://vignette-new-app.herokuapp.com/paiement/vignette');
     });
   }
 
