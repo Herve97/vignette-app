@@ -1,0 +1,137 @@
+.card-header .row .text-d-white {
+  color: whitesmoke !important;
+}
+
+.row .col .text-d-white {
+  color: whitesmoke !important;
+}
+
+.swiper-container-android .swiper-slide, .swiper-wrapper{
+  margin-right: 0 !important;
+}
+
+.container .carv .voiture{
+  width: 100% !important;
+  height: 150px;
+  border-radius: 15px 15px 0 0 !important;
+}
+
+.container .carv .voiture img{
+  width: 100% !important;
+  height: 100%;
+  object-fit: cover;
+}
+
+.container .carv{
+  padding-top: 0 !important;
+}
+
+.container .carv h6{
+  
+}
+
+.container .carv .plaque{
+  border-bottom: 1px solid #eee;
+  border-top: 1px solid #eee;
+}
+
+.container .carv .prix{
+  font-weight: bold;
+  font-size: 15px;
+  margin-top: 20px;
+}
+
+/** Parsley css   **/
+
+input.parsley-success,
+select.parsley-success,
+textarea.parsley-success {
+  color: #468847;
+  background-color: #DFF0D8;
+  border: 1px solid #D6E9C6;
+}
+
+input.parsley-error,
+select.parsley-error,
+textarea.parsley-error {
+  color: #B94A48;
+  background-color: #F2DEDE;
+  border: 1px solid #EED3D7;
+}
+
+.parsley-errors-list {
+  margin: 2px 0 3px;
+  padding: 0;
+  list-style-type: none;
+  font-size: 1.2em;
+  line-height: 0.9em;
+  opacity: 0;
+  color:darkred;
+  transition: all .3s ease-in;
+  -o-transition: all .3s ease-in;
+  -moz-transition: all .3s ease-in;
+  -webkit-transition: all .3s ease-in;
+}
+
+.parsley-errors-list.filled {
+  opacity: 0;
+}
+
+/* ***********
+End parsley css
+************* */
+
+/** qrcodeimage **/
+
+.img-qr{
+  width: 80%;
+  height: 80%;
+  display: block;
+  margin: 0 auto;
+}
+
+/*************************************************************************************************************/
+
+.main{
+  background: #fff !important;
+}
+
+.main .container .shadow-lg .card-header h3{
+  color: #6610f2 !important;
+}
+
+.main .container h3,
+.main .container h6,
+.main .container p{
+  color: #6610f2 !important;
+}
+
+.main .container .shadow-lg .card-body form .form-group .form-control,
+.main .main-container .container .card .card-body form .form-row .form-group .form-control{
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+  background-image: none;
+  border: 1px solid #6610f2 !important;
+  border-radius: 10px !important;
+  color: #323232 !important;
+}
+
+
+.main .container .shadow-lg .card-body form .form-group label,
+.main .main-container .container .card .card-body form .form-row .form-group label{
+  display: none;
+}
+
+.main .container .shadow-lg .card-body form .form-group button{
+  background-color: #6610f2 !important;
+  color: #fff !important;
+}
+
+.main .container .shadow-lg .card-body,
+.main .main-container .container .card .card-body {
+  padding: 10px !important;
+}
+
+.main .container .intro{
+  color: #6610f2 !important;
+}

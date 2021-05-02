@@ -1,0 +1,16 @@
+<div class="col-auto">
+  <div class="avatar avatar-40 rounded-circle position-relative">
+      <figure class="background">
+          <!--img src="/img/user1.png" alt=""-->
+          <% if(user.avatar == "") { %>
+            <img id="noimage" src="/img/no_image1.png">
+          <% } else { %>
+            <img id="noimage" src="/user_avatar/<%= user._id %>/<%= user.avatar %>">
+          <% } %>
+      </figure>
+  </div>
+</div>
+<div class="col pl-3 text-left align-self-center">
+  <h6 class="mb-1"><%= user.prenom %> <%= user.nom %></h6>
+  <p class="small text-default-secondary"><%= user.telephone %></p>
+</div>

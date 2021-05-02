@@ -1,6 +1,10 @@
 const Vehicule = require('../models/Vehicule');
 const User = require('../models/User');
 
+const mkdirp = require('mkdirp');
+const fs = require('fs-extra');
+const resizeImg = require('resize-img');
+
 //Get Single Level
 exports.getVehiculeByUser = async (req, res, next) => {
 
@@ -23,10 +27,21 @@ exports.getVehiculeByUser = async (req, res, next) => {
   Post Level
 */
 
-exports.postVehicule = async (req, res, next) => {
+exports.postVehicule = async (req, res) => {
+
+    if (!req.files) {
+        imageFile = "";
+    }
+
+    if (req.files) {
+        var imageFile = typeof req.files.pic !== "undefined" ? req.files.pic.name : "";
+    }
+
+    req.checkBody('pic', 'you must').isImage(imageFile);
+
     const vehiculeExist = await Vehicule.findOne({ num_plaque: req.body.num_plaque });
 
-    const idUser = req.params.userId;
+    const idUser = req.params.userId;   //"6064ab585f194a098c13af36"; 
 
     const { num_plaque, marque, modele, type, puissance, couleur, annee_fabrication, num_chassis } = req.body
 
@@ -34,14 +49,15 @@ exports.postVehicule = async (req, res, next) => {
         res.status(400).json({ "error": 'Vehicule already Exist' });
     } else {
         const vehicule = new Vehicule({
-            num_plaque: num_plaque,
-            marque: marque,
-            modele: modele,
-            type: type,
-            puissance: puissance,
-            couleur: couleur,
+            num_plaque: num_plaque.toUpperCase(),
+            marque: marque.toUpperCase(),
+            modele: modele.toUpperCase(),
+            type: type.toUpperCase(),
+            puissance: puissance.toUpperCase(),
+            couleur: couleur.toUpperCase(),
+            pic: imageFile,
             annee_fabrication: annee_fabrication,
-            num_chassis: num_chassis,
+            num_chassis: num_chassis.toUpperCase(),
             prix: puissance * 5
         });
 
@@ -51,12 +67,45 @@ exports.postVehicule = async (req, res, next) => {
 
         vehicule.idUser = foundUserId._id;
 
-        vehicule.save().then((result) => {
-            res.redirect('/home');
-        }).catch((error) => {
-            res.status(400).json({ 'error': error })
-        });
+        try{
+            const cars = await vehicule.save(
+
+                function (err) {
+                    if (err)
+                        console.log(err)
+                    //Add car and create uploads folder
+                    mkdirp('public/car_images/' + vehicule.num_plaque, function (err) {
+                        return console.log(err);
+                    });
+        
+                    mkdirp('public/car_images/' + vehicule.num_plaque + '/car', function (err) {
+                        return console.log(err);
+                    });
+        
+                    if (imageFile != "") {
+                        var vehiculeImage = req.files.pic;
+                        var path = 'public/car_images/' + vehicule.num_plaque + '/' + imageFile;
+        
+                        vehiculeImage.mv(path, function (err) {
+                            return console.log(err);
+                        });
+                    }
+                    res.redirect('/home');
+                    
+                })
+                
+
+        } catch (err) {
+            res.status(400).json({ 'error': err })
+        }
+       
     }
+}
+
+// GET add vehicule
+
+exports.getAddVehicule = async (req, res, next) =>{
+    res.render('auth/add_vehicule');
 }
 
 

@@ -1,4 +1,241 @@
-<!DOCTYPE html>
+
+<% result.forEach(function(vignette) { %>
+<% }); %>
+
+<div class="col-auto pr-0">
+  <% car.forEach(function(vehicule) { %>
+    <div class="avatar avatar-40 rounded">
+      <div class="background">
+        <!--img src="/img/user2.png" alt=""-->
+        <img src="/car_images/<%= paiement.num_plaque%>/<%= vehicule.pic%>" alt="">
+      </div>
+    </div>
+  <% }); %>
+</div>
+
+<div class="col-auto pr-0">
+
+  <div class="avatar avatar-40 rounded">
+
+    <div class="background">
+      <!--img src="/img/user2.png" alt=""-->
+      <img src="/car_images/<%= paiement.num_plaque%>/<%= vehicule.pic%>" alt="">
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- Required jquery and libraries -->
+<script src="/js/jquery-3.3.1.min.js"></script>
+<script src="/js/popper.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+<!-- cookie js -->
+<script src="/js/jquery.cookie.js"></script>
+
+<!-- Swiper slider  js-->
+<script src="/vendor/swiper/js/swiper.min.js"></script>
+
+<!-- Customized jquery file  -->
+<script src="/js/main.js"></script>
+<script src="/js/color-scheme-demo.js"></script>
+
+
+<!-- page level custom script -->
+<script src="/js/app.js"></script>
+
+</body>
+
+</html>
+
+
+<!-- Required jquery and libraries -->
+<script src="/js/jquery-3.3.1.min.js"></script>
+<script src="/js/popper.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+<!-- cookie js -->
+<script src="/js/jquery.cookie.js"></script>
+
+<!-- Swiper slider  js-->
+<script src="/vendor/swiper/js/swiper.min.js"></script>
+
+<!-- Customized jquery file  -->
+<script src="/js/main.js"></script>
+<script src="/js/color-scheme-demo.js"></script>
+
+
+<!-- page level custom script -->
+<script src="/js/app.js"></script>
+
+</body>
+
+</html>
+
+
+<form class="form-horizontal" role="form" id="stripeForm" action="paiement/payment" method="POST"> 
+  <input type="hidden" value="<%= vehicule._id %>" name="_id"/>
+  <input type="hidden" value="<%= vehicule.num_plaque %>" name="num_plaque"/>
+  <input type="hidden" value="<%= vehicule.prix %>" name="prix"/>
+
+  <script
+      src="//checkout.stripe.com/v3/checkout.js"
+      class="stripe-button"
+      data-key="<%= key %>" 
+      data-amount="<%= stripePrix %>" 
+      data-currency="usd" 
+      data-name="<%= user.prenom %> <%= user.nom %> <%= user.postnom %>" 
+      data-description="Achat Vignette" 
+      data-locale="auto" > 
+  </script>
+
+</form>
+
+
+<img src="/img/favicon144.png" alt="" class="w-100">
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    
+    <div class="modal-dialog">
+
+      <div class="modal-content">
+
+        <div class="modal-header">
+
+          <h5 class="modal-title" id="staticBackdropLabel">Ajouter un véhicule</h5>
+          <!-- <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button> -->
+          <button type="button" className="close btn btn-light" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+
+        </div>
+
+        <div class="modal-body">
+
+          <form method="POST" action="/vehicule/addvehicule">
+
+            <div class="form-row">
+
+              <div class="col-md-6">
+
+                <div class="form-group">
+                  <label class="form-control-label text-black" for="inputFirstName">Marque</label>
+                  <input class="form-control text-black" id="inputFirstName" name="marque" type="text" placeholder="Ex. Range Rover" />
+                </div>
+
+              </div>
+
+
+              <div class="col-md-6">
+
+                <div class="form-group">
+                  <label class="form-control-label text-black" for="inputFirstName">Modèle</label>
+                  <input class="form-control text-black" name="modele" id="inputFirstName" type="text" placeholder="Ex. Evoque" />
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="form-row">
+
+              <div class="col-md-6">
+
+                <div class="form-group">
+                  <label class="form-control-label text-black" for="inputFirstName">N° chassis</label>
+                  <input class="form-control text-black" id="inputFirstName" name="num_chassis" type="text" placeholder="Ex. 127" />
+                </div>
+
+              </div>
+
+              <div class="col-md-6">
+
+                <div class="form-group">
+                  <label class="form-control-label text-black" for="inputFirstName">Puissance (CV)</label>
+                  <input class="form-control text-black" id="inputFirstName" name="puissance" type="text" placeholder="Ex. 10" />
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="form-row">
+
+              <div class="col-md-6">
+
+                <div class="form-group">
+                  <label class="form-control-label text-black" for="inputFirstName">Couleur</label>
+                  <input class="form-control text-black" id="inputFirstName" name="couleur" type="text" placeholder="Ex. Noir" />
+                </div>
+
+              </div>
+
+              <div class="col-md-6">
+
+                <div class="form-group">
+                  <label class="form-control-label text-black" for="inputFirstName">Plaque</label>
+                  <input class="form-control text-black" id="inputFirstName" name="num_plaque" type="text" placeholder="Ex. RC1232" />
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="form-row">
+
+              <div class="col-md-6">
+
+                <div class="form-group">
+                  <label class="form-control-label text-black" for="inputFirstName">Type</label>
+                  <input class="form-control text-black" name="type" id="inputFirstName" type="text" placeholder="Ex. Diesel" />
+                </div>
+
+              </div>
+
+              <div class="col-md-6">
+
+                <div class="form-group">
+                  <label class="form-control-label text-black" for="inputFirstName">Année</label>
+                  <input class="form-control text-black" name="annee_fabrication" id="inputFirstName" type="text" placeholder="Ex. 2007" />
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+              <button class="btn btn-primary">Enregistrer</button>
+            </div>
+
+          </form>
+
+        </div>
+
+      </div>
+
+    </div>
+  
+  </div>
+
+
+
+
+
+<div>
+    <button type="button" class="icon icon-50 rounded-circle mb-2 bg-white-light" data-toggle="modal" data-target="#staticBackdrop">
+      <span class="material-icons">class</span>
+    </button>
+    <p><small>Ajouter un Véhicule</small></p>
+</div>
+
+
+
+<!--DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8" />
@@ -49,4 +286,4 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
     </body>
-</html>
+</html-->

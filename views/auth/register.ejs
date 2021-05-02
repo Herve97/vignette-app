@@ -1,72 +1,138 @@
 <%- include('../_layouts/header.ejs') %>
-    <body class="bg-primary">
-        <div id="layoutAuthentication">
-            <div id="layoutAuthentication_content">
-                <main>
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-7">
-                                <div class="card shadow-lg border-0 rounded-lg mt-5" style="margin-bottom:20px;">
-                                    <div class="card-header"><h3 class="text-center font-weight-light my-4">Inscription</h3></div>
-                                    <div class="card-body">
-                                        <form method="POST" action="/user/register">
-                                            <div class="form-row">
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label class="small mb-1" for="inputFirstName">Nom</label>
-                                                        <input class="form-control py-4" name="nom"  id="inputFirstName" type="text" placeholder="Nom" />
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label class="small mb-1" for="inputLastName">Postnom</label>
-                                                        <input class="form-control py-4"  name="postnom" id="inputLastName" type="text" placeholder="Postnom" />
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label class="small mb-1" for="inputLastName">Prenom</label>
-                                                        <input class="form-control py-4" id="inputLastName"  name="prenom" type="text" placeholder="Prenom" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="form-row">
+    <%- include('../_layouts/loader.ejs') %>
 
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label class="small mb-1" for="inputEmail">Email</label>
-                                                        <input class="form-control py-4" id="inputEmail" name="email" type="email" placeholder="exemple@x.com" />
-                                                    </div>
-                                                </div>
+    <!-- Begin page content -->
+    <main class="flex-shrink-0 main has-footer">
+        <!-- Fixed navbar -->
+        <header class="header">
+            <div class="row">
+                <div class="col-auto px-0">
+                    <button class="menu-btn btn btn-40 btn-link back-btn" type="button">
+                        <span class="material-icons">keyboard_arrow_left</span>
+                    </button>
+                </div>
+                <div class="text-left col align-self-center">
 
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label class="small mb-1" for="inputTelephone">Telephone</label>
-                                                        <input class="form-control py-4" id="inputTelephone" name="telephone" type="number" placeholder="XXXXXXX" />
-                                                    </div>
-                                                </div>
+                </div>
+                <div class="ml-auto col-auto align-self-center">
+                    <a href="/user/login" class="text-white">
+                        Connexion
+                    </a>
+                </div>
+            </div>
+        </header>
 
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label class="small mb-1" for="inputPassword">Mot de passe</label>
-                                                        <input class="form-control py-4" id="inputPassword" type="password" name="password" placeholder="Mot de passe" />
-                                                    </div>
-                                                </div>
-                                            </div>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-7">
+                    <div class="card shadow-lg border-0 rounded-lg mt-5" style="background: none;">
 
-                                            <div class="form-group mt-4 mb-0"><button  class="btn btn-primary btn-block" >S'inscrire</button></div>
-                                        </form>
+                        <div class="card-header"><h3 class="text-center font-weight-light my-4 text-white">Inscription</h3></div>
+                        <div class="card-body">
+                            <form method="POST" action="/user/register" enctype="multipart/form-data" id="form-input" data-parsley-validate>
+                                <div class="form-row">
+                                    <div class="col-md-4">
+                                        <div class="form-group float-label active">
+                                            <label class="small mb-1 text-white" for="inputFirstName">Nom</label>
+                                            <input class="form-control py-4 text-white" name="nom"  id="inputFirstName"
+                                             type="text" placeholder="Nom" required/>
+                                        </div>
                                     </div>
-                                    <div class="card-footer text-center">
-                                        <div class="small"><a href="login">Vous avez deja un compte? Connectez  vous</a></div>
+                                    <div class="col-md-4">
+                                        <div class="form-group float-label active">
+                                            <label class="small mb-1 text-white" for="inputLastName">Postnom</label>
+                                            <input class="form-control py-4 text-white"  name="postnom" id="inputLastName"
+                                             type="text" placeholder="Postnom" required/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group float-label active">
+                                            <label class="small mb-1 text-white" for="inputLastName">Prenom</label>
+                                            <input class="form-control py-4 text-white" id="inputLastName"
+                                              name="prenom" type="text" placeholder="Prenom" required/>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                                
+                                <div class="form-row">
+
+                                    <div class="col-md-4">
+                                        <div class="form-group float-label active">
+                                            <label class="small mb-1 text-white" for="inputEmail">Email</label>
+                                            <input class="form-control py-4 text-white" id="inputEmail"
+                                             name="email" type="email" placeholder="exemple@x.com" required/>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group float-label active">
+                                            <label class="small mb-1 text-white" for="inputTelephone">Telephone</label>
+                                            <input class="form-control py-4 text-white" id="inputTelephone"
+                                             name="telephone" type="tel" placeholder="XXXXXXX" required/>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group float-label active">
+                                            <label class="small mb-1 text-white" for="inputPassword">Mot de passe</label>
+                                            <input class="form-control py-4 text-white" id="inputPassword"
+                                             type="password" name="password" placeholder="Mot de passe" required/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+
+                                    <div class="col-md-6">
+                                        <div class="form-group float-label active">
+                                            <label class="small mb-1 text-white" for="inputAvatar">Avatar</label>
+                                            <input class="form-control py-4 text-white" id="inputAvatar" type="file" name="avatar"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group text-center mt-4 mb-0"><button class="btn btn-primary" >S'inscrire</button></div>
+                            </form>
+                        </div>
+                        <div class="card-footer text-center">
+                            <div class="small text-white"><a href="/user/login">Vous avez deja un compte? Connectez  vous</a></div>
                         </div>
                     </div>
-                </main>
+                </div>
             </div>
-            <div id="layoutAuthentication_footer">
-                
-<%- include('../_layouts/footer.ejs') %>
+        </div>
+        
+    </main>
+
+    <!-- footer-->
+    <!--div class="footer no-bg-shadow py-3">
+        <div class="row justify-content-center">
+            <div class="col">
+                <a href="login" class="btn btn-default rounded btn-block">Enregistrement</a>
+            </div>
+        </div>
+    </div-->
+
+
+    <!-- Required jquery and libraries -->
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- cookie js -->
+    <script src="/js/jquery.cookie.js"></script>
+
+    <!-- Swiper slider  js-->
+    <script src="/vendor/swiper/js/swiper.min.js"></script>
+
+    <!-- Customized jquery file  -->
+    <script src="/js/main.js"></script>
+    <script src="/js/color-scheme-demo.js"></script>
+
+
+    <!-- page level custom script -->
+    <script src="/js/app.js"></script>
+
+</body>
+
+</html>

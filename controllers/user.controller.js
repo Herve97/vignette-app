@@ -1,8 +1,13 @@
+const User = require('../models/User');
+const Historique = require('../models/Historique_transaction');
+const Vehicule = require('../models/Vehicule');
+
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
-const User = require('../models/User');
 const passport = require('passport');
-// const bcrypt = require('bcryptjs');
+const mkdirp = require('mkdirp');
+const fs = require('fs-extra');
+const resizeImg = require('resize-img');
 
 
 //Get All User
@@ -26,6 +31,7 @@ exports.getUser = async (req, res, next) => {
   });
 }
 
+/*
 async function hashPassword(password) {
   return await bcrypt.hash(password, 10);
 }
@@ -33,6 +39,7 @@ async function hashPassword(password) {
 async function validatePassword(plainPassword, hashedPassword) {
   return await bcrypt.compare(plainPassword, hashedPassword);
 }
+*/
 
 /* 
  * Login Get and Post 
@@ -51,47 +58,160 @@ exports.login = (req, res, next) => {
  * POST add Player 
 */
 
-exports.register = (req, res) => {
-  const { nom, postnom, prenom, email, telephone, password } = req.body;
+exports.register = async (req, res, next) => {
 
-  User.findOne({ email: email }).then(user => {
+
+  if(!req.files){
+    imageFile = "";
+  }
+
+  if(req.files){
+    var imageFile = typeof req.files.avatar !== "undefined" ? req.files.avatar.name : "";
+  }
+
+  req.checkBody('pic', 'you must').isImage(imageFile);
+
+  User.findOne({ telephone: req.body.telephone }).then(user => {
     if (user) {
-      console.log('Email or Username already exists' );
+      console.log('Telephone or Username already exists' );
       res.render('auth/register', {
-        postnom: postnom,
-        prenom: prenom,
-        nom: nom,
-        telephone: telephone,
-        email: email,
-        password: password,
+        postnom: req.body.postnom.toUpperCase(),
+        prenom: req.body.prenom.toUpperCase(),
+        nom: req.body.nom.toUpperCase(),
+        avatar: imageFile,
+        telephone: req.body.telephone,
+        email: req.body.email,
+        password: req.body.password,
       });
     } else {
       const newUser = new User({
-        postnom: postnom,
-        prenom: prenom,
-        nom: nom,
-        telephone: telephone,
-        email: email,
-        password: password,
+        postnom: req.body.postnom.toUpperCase(),
+        prenom: req.body.prenom.toUpperCase(),
+        nom: req.body.nom.toUpperCase(),
+        avatar: imageFile,
+        telephone: req.body.telephone,
+        email: req.body.email,
+        password: req.body.password,
       });
 
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(newUser.password, salt, (err, hash) => {
-          if (err) throw err.message;
+          if (err) throw err;
           newUser.password = hash;
+          
           newUser
             .save()
             .then(user => {
+              
+              mkdirp('public/user_avatar/' + user._id, function(err){
+                return console.log(err);
+              });
+
+              mkdirp('public/user_avatar/' + user._id + '/user', function(err){
+                return console.log(err);
+              });
+
+              if(imageFile != ""){
+                var userImage = req.files.avatar;
+                var path = 'public/user_avatar/' + user._id + '/' + imageFile;
+
+                userImage.mv(path, function(err){
+                    return console.log(err);
+                });
+              }
+
               req.flash(
                 'success_msg',
                 'You are now registered and can log in'
               );
+
               res.redirect('/user/login');
             })
             .catch(err => console.log(err));
         });
+
       });
+
     }
+
+  });
+
+}
+
+// get user image for the profile
+exports.getUserImage = async (req, res, next) =>{
+  // userData =  req.user;
+
+  await User.findById({
+    _id: req.user._id
+  }).then((result) =>{
+    res.status(200).render('_layouts/headprofile', {user: result});
+  }).catch((error)=>{
+    res.status(500).send(error);
+  });
+
+}
+
+// Get image for side
+exports.getUserImageside = async (req, res, next) =>{
+  // userData =  req.user;
+
+  await User.findById({
+    _id: req.user._id
+  }).then((result) =>{
+    res.status(200).render('_layouts/headside', {user: result});
+  }).catch((error)=>{
+    res.status(500).send(error);
+  });
+
+}
+
+exports.getUserImageside2 = async (req, res, next) =>{
+  // userData =  req.user;
+
+  await User.findById({
+    _id: req.user._id
+  }).then((result) =>{
+    res.status(200).render('_layouts/headside2', {user: result});
+  }).catch((error)=>{
+    res.status(500).send(error);
+  });
+
+}
+
+/*
+* GET profile user
+*/
+
+
+// "6064ab585f194a098c13af36"
+
+exports.getProfile = async (req, res, next) =>{
+
+  userData =  req.user; //req.session.passport;
+
+  console.log("userdata ", userData);
+
+  const user = await User.findById({
+    _id: userData._id
+  }).then(async (result) =>{
+    console.log("User profile ", result)
+
+    await Historique.find({idUser: result._id}).sort('-createdAt').limit(5).exec(async function (err, user) {
+      if (err) {
+          res.status(500).send(err)
+      } else {
+        
+        const vehicule = await Vehicule.find({idUser: userData._id});
+        console.log("vehicule in profile ", vehicule);
+      
+        res.status(200).render('auth/profile', { result: user, car: vehicule});
+      }
+    })
+
+
+  }).catch((error)=>{
+    console.log(error);
   });
 
 }
@@ -113,110 +233,94 @@ exports.deleteUser = async (req, res, next) => {
  * Logout
  */
 exports.logout = (req, res, next) => {
-  res.redirect('/user/login');
   req.logout();
+  res.redirect('/user/login');
   req.flash('success_msg', 'You are logged out');
 }
 
 /*
-exports.login = async (req, res, next) => {
-  try {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email });
-    if (!user) return next(new Error('Email does not exist'));
-    const validPassword = await validatePassword(password, user.password);
-    if (!validPassword) return next(new Error('Password is not correct'))
-    var accessToken = jwt.sign({ userId: user._id }, "secretfortoken", {
-      expiresIn: "1d"
-    });
-     const logger = await User.findByIdAndUpdate(user._id, { accessToken });
-    res.status(200).json({logger, accessToken});
-    
-  } catch (error) {
-    next(error);
-  }
-}
-*/
+  const userExist = await User.findOne({ email: req.body.email });
+  const { nom, postnom, prenom, email, telephone, password } = req.body;
 
-/*
-exports.signup = async (req, res, next) => {
-  const emailExist = await User.findOne({ email: req.body.email })
+  const salt = await bcrypt.genSaltSync(10);
 
-  if (emailExist) {
-    res.status(400).json({ "error": 'Email already Exist' })
-  }
-  try {
-    const { nom, postnom, prenom, email, telephone, password } = req.body
-    const hashedPassword = await hashPassword(password);
-    const newUser = new User({ nom, postnom, prenom, email, telephone, password: hashedPassword });
-    const accessToken = jwt.sign({ userId: newUser._id }, "secretfortoken", {
-      expiresIn: "1d"
+  const hashpassword = await bcrypt.hash(password, salt);
+
+  if (userExist) {
+    res.status(400).json({ "error": 'User already Exist' });
+  }else{
+    const newUser = new User({
+      postnom: postnom,
+      prenom: prenom,
+      nom: nom,
+      avatar: imageFile,
+      telephone: telephone,
+      email: email,
+      password: hashpassword,
     });
-    newUser.accessToken = accessToken;
-    await newUser.save();
-    res.status(200).json({
-      data: newUser,
-      accessToken
-    })
-  } catch (error) {
-    next(error)
+
+
   }
-}
-*/
+  */
+
 
 /*
 
-exports.login = async (req, res, next) => {
-  const emailExist = await User.findOne({ email: req.body.email });
-  if (!emailExist) {
-    res.status(400).json({ error: "Email not Found" })
+// const { nom, postnom, prenom, email, telephone } = req.body;
+  console.log(req.body);
+  const salt = await bcrypt.genSaltSync(10);
+
+  const hashpassword = await bcrypt.hash(req.body.password, salt);
+
+  const emailExist = await User.findOne({email: req.body.email});
+
+  if(emailExist){
+    res.status(400).json({"error":'Email already Exist'})
   }
 
-  const checkpassword = await bcrypt.compare(req.body.password, emailExist.password);
-  if (!checkpassword) {
-    res.status(400).json({ error: "Password mismatch" })
-  }
-
-  const token = jwt.sign({ id: emailExist.id }, 'anystring')
-  res.header('auth-token', token).json({
-    message: emailExist.nom,
-    'Token': token
-   })
-}
-
-
-
-
-exports.register = async (req, res, next) => {
-  const salt = await bcrypt.genSalt(10);
-
-  const hashpassword = await bcrypt.hash(req.body.password, salt)
-
-  const emailExist = await User.findOne({ email: req.body.email });
-
-  if (emailExist) {
-    res.status(400).json({ "error": 'Email already Exist' })
-  }
-
-  let user = new User({
-    nom: req.body.nom,
+  let user =  new User({
     postnom: req.body.postnom,
     prenom: req.body.prenom,
-    email: req.body.email,
+    nom: req.body.nom,
+    avatar: imageFile,
     telephone: req.body.telephone,
+    email: req.body.email,
     password: hashpassword
   });
 
+  try {
 
-  await user.save().then((result) =>{
-    res.status(200).send({
-      message: "User successfully created",
-      result: result
+    const userSignup = await user.save(function(err){
+       
+      mkdirp('public/avatar_images/' + user._id, function(err){
+        return console.log(err);
+      });
+
+      mkdirp('public/avatar_images/' + user._id + '/avatar', function(err){
+        return console.log(err);
+      });
+
+      if(imageFile != ""){
+        var userImage = req.files.avatar;
+        var path = 'public/avatar_images/' + user._id + '/' + imageFile;
+
+        userImage.mv(path, function(err){
+          return console.log(err);
+        });
+
+      }
+
+      req.flash(
+        'success_msg',
+        'You are now registered and can log in'
+      );
+
     });
-  }).catch((err) =>{
-    return res.status(500).send({ msg: err.message });
-  });
-
-}
+    res.redirect('/user/login');
+  } catch (error) {
+    next(error);
+  }
 
 */
+
+

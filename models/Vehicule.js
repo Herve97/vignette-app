@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const crypto = require('crypto');
-const VehiculeSchema = new mongoose.Schema({
+
+var VehiculeSchema = new mongoose.Schema({
   num_plaque: {
     type: String,
     required: true,
@@ -36,6 +36,9 @@ const VehiculeSchema = new mongoose.Schema({
   prix:{
     type: Number,
     required: true
+  },
+  pic:{
+    type: String
   },
   idUser:{
     type: mongoose.Schema.Types.ObjectId,

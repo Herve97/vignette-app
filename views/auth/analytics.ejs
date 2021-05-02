@@ -1,0 +1,202 @@
+<%- include('../_layouts/header.ejs') %>
+<%- include('../_layouts/loader.ejs') %>
+<%- include('../_layouts/sidebar.ejs') %>
+
+  <!-- Begin page content -->
+  <main class="flex-shrink-0 main has-footer">
+    <!-- Fixed navbar -->
+    <header class="header">
+      <div class="row">
+
+        <div class="col-auto px-0">
+          <button class="menu-btn btn btn-40 btn-link" type="button">
+            <span class="material-icons">menu</span>
+          </button>
+        </div>
+
+        <div class="text-left col align-self-center">
+          <a class="navbar-brand" href="home">
+            <h5 class="mb-0">DGRK</h5>
+          </a>
+        </div>
+
+        <div class="ml-auto col-auto pl-0">
+          <button type="button" class="btn btn-link btn-40 colorsettings">
+            <span class="material-icons">color_lens</span>
+          </button>
+
+          <a href="#" class="menu-btn btn btn-40 btn-link" >
+            <span class="material-icons">notifications_none</span>
+            <span class="counter"></span>
+          </a>
+
+          <a href="user/profile" class="avatar avatar-30 shadow-sm rounded-circle ml-2">
+            <figure class="m-0 background">
+              <img src="/img/user1.png" alt="">
+            </figure>
+          </a>
+
+        </div>
+
+      </div>
+
+    </header>
+
+    <!-- page content start -->
+    <div class="container mt-3 mb-4 text-center">
+      <h2 class="text-white">VIGNETTE-APP</h2>
+      <!--p class="text-white mb-4">Total Balance</p-->
+    </div>
+
+    <div class="container text-center overflow-hidden">
+      <canvas id="mixedchartjs"></canvas>
+    </div>
+
+    <div class="main-container">
+
+      <div class="container mb-4">
+
+        <div class="row justify-content-center">
+
+          <div class="col-6 col-md-3">
+
+            <div class="card">
+
+              <div class="card-body">
+                <canvas id="doghnutchart" class="mb-3"></canvas>
+                <p class="text-secondary mb-2">Payement reussi</p>
+                <!--h6>$ 2051.00</h6-->
+                <!--p class="text-success">10% <span class="material-icons small">call_made</span></p-->
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="col-6 col-md-3">
+
+            <div class="card">
+
+              <div class="card-body">
+                <canvas id="doghnutchart3" class="mb-3"></canvas>
+                <p class="text-secondary mb-2">Payement échoué</p>
+                <!--h6>$ 1200.00 </h6-->
+                <!--p class="text-danger">-5% <span class="material-icons small">call_received</span></p-->
+              </div>
+                  
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Swiper -->
+      <div class="container mb-4">
+
+        <div class="row mb-3">
+
+          <div class="col">
+            <h6 class="subtitle mb-0">Liste des cartes bancaires</h6>
+          </div>
+
+        </div>
+
+        <div class="swiper-container swiper-cards">
+
+          <div class="swiper-wrapper">
+
+            <div class="swiper-slide">
+
+              <div class="card border-0 mb-3 bg-default text-white">
+
+                <div class="card-header">
+                  <h6 class="mb-0">Visa <small>Debit Card</small></h6>
+                </div>
+
+                <div class="card-body">
+                  <h5 class="mb-0 mt-2">4444 5264 2541 26651</h5>
+                </div>
+
+                <div class="card-footer">
+
+                  <div class="row">
+
+                    <div class="col">
+                      <p class="mb-0">26/21</p>
+                      <p class="small ">Expiry date</p>
+                    </div>
+
+                    <div class="col-auto align-self-center text-right">
+                      <p class="mb-0">Agnish Carvan</p>
+                      <p class="small">Card Holder</p>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+              <!--p class="text-secondary text-center mb-1">Total Expense</p>
+              <h5 class="mb-4 text-center">$ 1500 <small class="text-success">28% <span class="material-icons small">call_made</span></small></h5-->
+            </div>
+                                
+          </div>
+          <!-- swiper pagination -->
+          <div class="swiper-pagination "></div>
+        </div>
+
+        <!-- Swiper -->
+        <div class="container mb-4">
+
+          <div class="row mb-3">
+
+            <div class="col">
+              <h6 class="subtitle mb-0">Payement fréquents </h6>
+            </div>
+
+          </div>
+
+          <div class="swiper-container swiper-users ">
+
+            <div class="swiper-wrapper">
+
+              <div class="swiper-slide">
+
+                <div class="card">
+
+                  <div class="card-body">
+
+                    <div class="row">
+
+                      <div class="col-auto">
+                        <div class="avatar avatar-60 rounded mb-1">
+                          <div class="background"><img src="/img/user1.png" alt=""></div>
+                        </div>
+                      </div>
+
+                      <div class="col pl-0">
+                        <p class="text-secondary mb-0"><small>Errica</small></p>
+                        <p class="mb-1">$1500 <small class="text-success">28% <span class="material-icons small">call_made</span></small></p>
+                        <p class="text-secondary small">25-06-2020 08:00pm</p>
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+                        
+          </div>
+
+        </div>
+            <!-- Swiper -->
+      </div>
+    </div>
+  </main>
+<%- include('../_layouts/footer.ejs') %>

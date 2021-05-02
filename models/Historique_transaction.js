@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const crypto = require('crypto');
+//const crypto = require('crypto');
 const historiqueSchema = new mongoose.Schema({
   idUser: {
     type: mongoose.Schema.Types.ObjectId,
@@ -25,6 +25,9 @@ const historiqueSchema = new mongoose.Schema({
   refPaiement: {
     type: String
   },
+  code_paiement: {
+    type: String
+  },
   date_paiement: {
     type: Date
   },
@@ -33,9 +36,9 @@ const historiqueSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-const Vehicule = mongoose.model('Historique_transaction', historiqueSchema);
+const Historique_transaction = mongoose.model('Historique_transaction', historiqueSchema);
 
-module.exports = Vehicule;
+module.exports = Historique_transaction;
 
 /*
 

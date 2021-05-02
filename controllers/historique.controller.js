@@ -3,9 +3,22 @@ const Vehicule = require('../models/Vehicule');
 const User = require('../models/User');
 const Historique = require('../models/Historique_transaction');
 
+const PUBLISHABLE_KEY = "pk_test_51IlzGlJsvsf81CSo37sbixThf3GkryFfABqghuzEch9CiVv3TrnsHIZ7IYY5NhlQCq6L4t1QDDSW4WL8E7OZOIMU00XVsPWj0o";
+const SECRET_KEY = "sk_test_51IlzGlJsvsf81CSo22Rq63CH9uQDbcAZjGcDW4QtIXIVQOEwXPzCIvPlQAvsJkh5CQblLdfR9r92pQZQTBvNIN9S00VbCsUcjd";
+
+const stripe = require('stripe')(SECRET_KEY);
+
+const mkdirp = require('mkdirp');
+const fs = require('fs-extra');
+const resizeImg = require('resize-img');
+
+const QRCode = require('qrcode');
+
 // GET paiement by User
 exports.getPaiement = async (req, res, next) => {
   userData = req.session.passport;
+
+  // "6064ab585f194a098c13af36"
 
   let foundUserId = await User.findById({
     _id: userData.user
@@ -13,7 +26,7 @@ exports.getPaiement = async (req, res, next) => {
 
   // let foundVehiculeUser = await Vehicule.find({ idUser: foundUserId});
 
-  await Historique.find({idUser: foundUserId}).then((result)=>{
+  await Historique.find({idUser: foundUserId}).then(async (result)=>{
     res.status(200).render('paiement/paiement', { result: result});
   }).catch((error)=>{
     res.status(500).json({
@@ -25,6 +38,132 @@ exports.getPaiement = async (req, res, next) => {
 
 }
 
+// GET only 5 transaction
+
+exports.getRecentTransaction = async (req, res, next) => {
+  userData = req.session.passport;
+
+  await Historique.find().sort('-createdAt').limit(5).exec(async function (err, user) {
+    if (err) {
+        res.status(500).send(err)
+    } else {
+      const vehicule = await Vehicule.find({idUser: userData._id});
+      console.log("vehicule in profile ", vehicule);
+      res.status(200).render('auth/profile', { result: result, car: vehicule});
+    }
+  })
+
+}
+
+// get vignette info
+exports.vignette = async (req, res, next) =>{
+
+  userData = req.session.passport;
+
+  let foundUserId = await User.findById({
+    _id: req.user._id
+  });
+
+  var vehicules = await Vehicule.find({idUser: req.user._id});
+
+  await Historique.find().
+  populate("Vehicule", {num_plaque:1, _id:0}).sort('-createdAt').exec((err, vehicule)=>{
+    if(err){
+      res.status(500).send(err);
+    }else{
+      //const vehicule = await Vehicule.find({num_plaque: })
+      res.status(200).render('auth/vignette', { result: vehicule, vehicules: vehicules});
+    }
+  });
+
+/*
+
+  await Historique.findOne({num_plaque: foundUserId._id}).sort('-createdAt').exec(async function (err, user) {
+    if (err) {
+        console.log(err.message);
+        res.status(500).send(err)
+    } else {
+      
+
+    }
+
+    // res.status(200).render('auth/vignette', { result: user, image: text, users: foundUserId});
+
+  })
+
+*/
+
+
+}
+
+/** STRIPE Paiement **/
+/*
+exports.stripePaiement = async (req, res, next) =>{
+
+  userData = req.session.passport;
+  let foundUserId = await User.findById({
+    _id: req.user._id
+  });
+
+  stringPrix = ""+ req.body.prix + "00";
+
+  let vehicule = await Vehicule.find({ idUser: foundUserId });
+
+  stripe.customers.create({
+    email: req.body.stripeEmail,
+    source: req.body.stripeToken,
+    name: `${foundUserId.prenom} ${foundUserId.nom} ${foundUserId.postnom}`,
+    address:{
+      postal_code: "100",
+      city: "Kinshasa",
+      state: "Kinshasa",
+      country: "RDC"
+    }
+  })
+  .then((customer) =>{
+    // console.log("customer debut", customer);
+    return stripe.charges.create({
+      amount: parseFloat(stringPrix),
+      description: 'Paiement Vignette',
+      currency: 'USD',
+      customer: customer.id
+    });
+
+  })
+  .then((charge) =>{
+    console.log("My charge ", charge);
+
+    let amount = "" + charge.amount;
+
+    let val = amount.substring(0, 2);
+
+    console.log("La val ", val);
+
+    const insertPayment = new Historique({
+      idUser: userData,
+      idVehicule: data.clientData._id,
+      num_plaque: data.clientData.num_plaque,
+      currency: "USD",
+      cout: parseFloat(val),
+      refPaiement: charge.id,
+      date_paiement: new Date(charge.created).toLocaleString,
+      statut: charge.status						
+    });
+
+    res.redirect('http://localhost:3000/paiement/vignette');
+  })
+  .catch((err) =>{
+    console.log("My error ", err);
+    res.redirect('home');
+  })
+
+}
+*/
+
+/** END STRIPE Paiement **/
+
+
+/** PAYPAL Paiement  **/
 
 // POST Add Payement
 exports.paynow = async (req, res, next) => {
@@ -35,6 +174,8 @@ exports.paynow = async (req, res, next) => {
 
   let vehicule = await Vehicule.find({ idUser: foundUserId });
 
+  console.log("notre body paynow ", req.body);
+
   const data = {
     userID: userData.user,
     data: req.body
@@ -43,12 +184,16 @@ exports.paynow = async (req, res, next) => {
 
   helper.payNow(data, function (error, result) {
 
+    console.log("data from paynow ", data);
+
     if (error) {
       res.writeHead(200, { 'Content-Type': 'text/plain' });
       res.end(JSON.stringify(error));
     } else {
       userData.paypalData = result;
+      console.log("User paypal data in paynow ", userData.paypalData);
       userData.clientData = req.body;
+      console.log("Client data from paynow ", userData.clientData)
       res.redirect(result.redirectUrl);
     }
 
@@ -69,7 +214,7 @@ exports.execute = (req, res, next) => {
     userInfo.statut = "success";
     console.log("User info execute ", userInfo);
     helper.getResponse(userInfo, PayerID, function (response) {
-      res.redirect('/home');
+      res.redirect('http://localhost:3000/paiement/vignette');
     });
   }
 
@@ -108,6 +253,72 @@ exports.cancel = (req, res, next) => {
   }
 
 }
+
+/** END PAYPAL Paiement **/
+
+
+// console.log("my text qr ", text);
+
+/*
+
+const imageFile = await QRCode.toDataURL(text);
+mkdirp('public/qr_image/' + user._id, function (err) {
+          return console.log(err);
+});
+
+mkdirp('public/qr_image/' + user._id + '/qrcode', function (err) {
+          return console.log(err);
+});
+
+*/
+
+// var qrImage = req.files.pic;
+
+ /*
+          qrImage.mv(path, function (err) {
+            return console.log(err);
+          });
+*/
+        
+/*
+        for(i=0; i <= user.length; i++){
+          text += "\n" + user[i].num_plaque + "\n" +
+           user[i].cout + "\n" + user[i].refPaiement + "\n" + user[i].date_paiement;
+        }
+*/
+
+// QRCode function
+/*
+async function generateQR (user, text){
+  try {
+
+    const qrimage = await QRCode.toFile(`${user._id}.png`, text);
+
+    mkdirp('public/qr_images/' + user._id, function (err) {
+      return console.log(err);
+    });
+
+    mkdirp('public/qr_images/' + user._id + '/qr', function (err) {
+      return console.log(err);
+    });
+
+    var qrCodeImage = req.files.pic;
+    var path = 'public/qr_images/' + user._id + '/' + qrimage;
+
+    console.log(path);
+        
+    qrCodeImage.mv(path, function (err) {
+      return console.log(err);
+    });
+
+    console.log( await QRCode.toString(text, {type: 'terminal'}) );
+
+  } catch (error) {
+    console.log(error);
+  }
+
+}
+*/
 
  // userInfo = JSON.stringify(userInfo);
 /*

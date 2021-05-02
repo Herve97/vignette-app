@@ -1,5 +1,9 @@
 const paypal = require('paypal-rest-sdk');
 const Historique = require('../models/Historique_transaction');
+const User = require('../models/User');
+const Vehicule = require('../models/Vehicule');
+var generator = require('generate-password');
+const QRCode = require('qrcode');
 
 // paypal auth configuration
 /*
@@ -21,6 +25,7 @@ paypal.configure({
 
 const self = {
 	insertPayment: async function (data, callback) {
+		/*
 		var response = {};
 		const payement = new Historique({
 			idUser: data.idUser,
@@ -44,22 +49,26 @@ const self = {
 			}
 			callback(response);
 		});
+		*/
 	},
 
 	payNow: function (paymentData, callback) {
 		var response = {};
 
-		console.log(paymentData.data.prix);
+		console.log("payement data from helper paynow",paymentData.data.prix);
+
+		//   https://vignette-new-app.herokuapp.com/paiement/execute
+		//   https://vignette-new-app.herokuapp.com/paiement/cancel
 
 		/* Creating Payment JSON for Paypal starts */
-		const payment = {
+		const payment_json = {
 			"intent": "authorize",
 			"payer": {
 				"payment_method": "paypal"
 			},
 			"redirect_urls": {
-				"return_url": "https://vignette-new-app.herokuapp.com/paiement/execute",
-				"cancel_url": "https://vignette-new-app.herokuapp.com/paiement/cancel"
+				"return_url": "http://localhost:3000/paiement/execute",
+				"cancel_url": "http://localhost:3000/paiement/cancel"
 			},
 			"transactions": [{
 				"amount": {
@@ -72,7 +81,7 @@ const self = {
 		/* Creating Payment JSON for Paypal ends */
 
 		/* Creating Paypal Payment for Paypal starts */
-		paypal.payment.create(payment, function (error, payment) {
+		paypal.payment.create(payment_json, function (error, payment) {
 			if (error) {
 				console.log(error);
 			} else {
@@ -90,6 +99,8 @@ const self = {
 				}
 			}
 
+			console.log("Response from helper paynow create payement ", response.payement);
+
 			/* 
 			* Sending Back Paypal Payment response 
 			*/
@@ -97,9 +108,11 @@ const self = {
 		});
 		/* Creating Paypal Payment for Paypal ends */
 	},
-	getResponse: function (data, PayerID, callback) {
+	getResponse: async function (data, PayerID, callback) {
 
 		var response = {};
+
+		console.log("Data transactions from helper getResponse ", data.paypalData.payment.transactions);
 
 		const serverAmount = parseFloat(data.paypalData.payment.transactions[0].amount.total);
 		const clientAmount = parseFloat(data.clientData.prix);
@@ -107,6 +120,9 @@ const self = {
 		const details = {
 			"payer_id": PayerID
 		};
+
+		console.log("Server Amount: ", serverAmount);
+		console.log("Client Amount: ", clientAmount);
 
 		response.userData = {
 			user: data.user
@@ -117,13 +133,15 @@ const self = {
 		console.log("Server Amount: " + serverAmount);
 		console.log("Client Amount: " + clientAmount);
 
-		if (serverAmount !== clientAmount) {
+		try {
+			
+			if (serverAmount !== clientAmount) {
 			response.error = true;
 			response.message = "Payment amount doesn't matched.";
 			callback(response);
 		} else {
 
-			paypal.payment.execute(paymentId, details, function (error, payment) {
+			paypal.payment.execute(paymentId, details, async function (error, payment) {
 				if (error) {
 					console.log(error);
 					response.error = false;
@@ -135,6 +153,12 @@ const self = {
 					* inserting paypal Payment in DB
 					*/
 
+					var pwd = generator.generate({
+						length: 5,
+						numbers: true,
+						lowercase: false
+					});
+
 					const insertPayment = new Historique({
 						idUser: data.user,
 						idVehicule: data.clientData._id,
@@ -142,16 +166,38 @@ const self = {
 						currency: "USD",
 						cout: serverAmount,
 						refPaiement: paymentId,
+						code_paiement: pwd,
 						date_paiement: data.paypalData.payment.create_time,
 						statut: data.paypalData.payment.state						
 					});
 
+					var userFound = await User.findById({_id: data.user});
+
+					var vehiculeFound = await Vehicule.findOne({num_plaque: data.clientData.num_plaque});
+ 
 					console.log("insert payment data avant insertion \n", JSON.stringify(insertPayment));
 
-					insertPayment.save((err, result) => {
+					insertPayment.save( async (err, result) => {
 						if(err){
 							throw err;
 						}else {
+							var text = `${userFound.prenom}\n${userFound.nom}\n${userFound.postnom}\n${userFound.prenom}\n${vehiculeFound.marque}\n${vehiculeFound.modele}\n${vehiculeFound.num_plaque}\n${vehiculeFound.puissance}CV\n${vehiculeFound.prix}`;
+
+							try {
+				
+								var path = 'public/qr_image/' + data.user + data.clientData.num_plaque;
+				
+								const qrimage = await QRCode.toFile(`${path}.png`, text);
+				
+								console.log("The QRCode");
+								console.log( await QRCode.toString(text, {type: 'terminal'}) );
+				
+								console.log("My text ", text);
+						
+							} catch (error) {
+								console.log(error);
+							}
+
 							console.log("Resultat final ", result);
 							response.message = "Payment Successful.";
 							callback(response);
@@ -162,10 +208,15 @@ const self = {
 
 			});
 
-		};
+		}
+
+		} catch (error) {
+			console.log("Error dans getResponse ", error);
+		}
 
 	}
 }
+
 module.exports = self;
 
 /*

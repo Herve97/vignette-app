@@ -1,0 +1,55 @@
+<!-- page content start -->
+
+      <div class="main-container">
+
+        <div class="container">
+        
+          <div class="card">
+
+            <div class="card-body px-0">
+
+              <ul class="list-group list-group-flush">
+                <% result.forEach(function(paiement) { %>
+                  <li class="list-group-item">
+
+                    <div class="row align-items-center">
+
+                      <div class="col-auto pr-0">
+
+                        <div class="avatar avatar-40 rounded">
+
+                          <div class="background">
+                            <!--img src="/img/user2.png" alt=""-->
+                            <img src="/car_images/<%= paiement.num_plaque.png%>" alt="">
+                          </div>
+
+                        </div>
+
+                      </div>
+
+                      <div class="col align-self-center pr-0">
+                        <h6 class="font-weight-normal mb-1"><%= paiement.num_plaque %></h6>
+                        <p class="small text-secondary mb-0"><%= paiement.refPaiement %></p>
+                        <p class="small text-secondary mb-0">
+                          <%= new Date(paiement.date_paiement).toLocaleDateString() %>, 
+                          <%= new Date(paiement.date_paiement).toLocaleTimeString() %>
+                        </p>
+                      </div>
+
+                      <div class="col-auto">
+                        <h6 class="text-success">$<%= paiement.cout %></h6>
+                      </div>
+
+                    </div>
+
+                  </li>
+                <% }); %>
+              </ul>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>

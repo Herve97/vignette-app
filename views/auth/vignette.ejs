@@ -1,0 +1,149 @@
+<%- include('../_layouts/header.ejs') %>
+<body class="body-scroll d-flex flex-column h-100 menu-overlay" data-page="addmoney">
+  <!-- screen loader -->
+  <div class="container-fluid h-100 loader-display">
+      <div class="row h-100">
+          <div class="align-self-center col">
+              <div class="logo-loading">
+                  <div class="icon icon-80 mb-4 rounded-circle">
+                      <img src="/img/dgrk_logo.jpg" alt="" class="w-100">
+                  </div>
+                  <h4 class="text-default">VIGNETTE APP</h4>
+                  <p class="text-secondary">DGRK</p>
+                  <div class="loader-ellipsis">
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <!-- Begin page content -->
+  <main class="flex-shrink-0 main">
+
+    <!-- Fixed navbar -->
+    <header class="header">
+
+      <div class="row">
+
+        <div class="col-auto px-0">
+          
+          <button class="menu-btn btn btn-40 btn-link back-btn" type="button">
+            <span class="material-icons">keyboard_arrow_left</span>
+            <!--a href="/home"></a-->
+          </button>
+        </div>
+            
+        <div class="text-left col align-self-center">
+          <!--a class="navbar-brand" href="/home"-->
+            <h5 class="mb-0">Liste des vignettes</h5>
+          </a>
+        </div>
+
+        <%- include('../_layouts/headside.ejs') %>
+
+      </div>
+
+    </header>
+
+    <!-- page content start -->
+
+    <div class="main-container">
+
+      <div class="container mb-1">
+      
+        <div class="card">
+
+          <div class="card-header">
+
+            <div class="row">
+
+              <div class="col-auto">
+
+                <!--div class="custom-control custom-switch">
+                  <input type="radio" name="paynow" class="custom-control-input" id="pay2" checked="">
+                  <label class="custom-control-label" for="pay2"></label>
+                </div-->
+
+              </div>
+
+              <div class="col pl-0">
+                <!--h6 class="subtitle mb-0">Add using card</h6-->
+                <h6 class="subtitle mb-0">Vignette payé</h6>
+              </div>
+
+              <!--div class="col-auto pl-0">
+                      <p class="text-secondary text-center"><a href="addcard.html">Add </a></p>
+              </div-->
+
+            </div>
+
+          </div>
+
+          <div class="card-body">
+
+            <div class="swiper-container swipercards">
+
+              <div class="swiper-wrapper pb-4">
+                <% result.forEach(function(vignette) { %>
+                  <div class="swiper-slide ">
+                  
+                    <div class="card border-0 bg-default text-white" style="margin: 5px;">
+
+                      <div class="card-header">
+
+                        <div class="row">
+
+                          <div class="col-auto">
+                            <i class="material-icons vm text-template">credit_card</i>
+                          </div>
+
+                          <div class="col pl-0">
+                            <h6 class="mb-1 text-d-white">P-<%= new Date(vignette.createdAt).getFullYear()%></h6>
+                          </div>
+
+                        </div>
+
+                      </div>
+
+                      <div class="card-body mt-2">
+
+                        <img class="img-qr" src="/qr_image/<%= vignette.idUser%><%= vignette.num_plaque%>.png">
+
+                      </div>
+
+                      <div class="row card-footer">
+
+                        <div class="col" style="text-align: center;">
+                          <h6 class="text-d-white" style="font-size: 12px;">Code confirmation</h6>
+                          <h2 class="badge font-weight-bold bg-success display-1" style="font-size: 15px;"><%= vignette.code_paiement%></h2>
+                          <!--button type="button" class="btn btn-sm btn-success">
+                          </button-->
+                          <!--h2 class="badge bg-success"></h2-->
+                        </div> 
+
+                      </div>
+
+                    </div>
+
+                  </div>
+                <% }); %>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      
+      </div>
+
+    </div>
+
+  </main>
+
+<%- include('../_layouts/footer.ejs') %>
+  

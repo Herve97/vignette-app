@@ -1,0 +1,152 @@
+<!--div class="col-8 mx-auto d-block align-middle" style="width: 50%; height: 50%;">
+                    <button type="submit" class="btn btn-primary mb-1">
+                    <img src="/img/paypal_logo2-nobg.png" alt="paypal logo" style="width: 20%; height: 20%;">
+                    <!--span class="material-icons">paid</span-->
+                    Paypal
+                  </button>
+                  </div-->
+
+
+<!--div class="card-footer">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#methodepaie">Payez</button>
+              </div-->
+
+<!-- Modal -->
+          <!--div class="modal fade" id="methodepaie" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    
+            <div class="modal-dialog">
+
+              <div class="modal-content">
+
+                <div class="modal-header">
+
+                  <h5 class="modal-title" id="staticBackdropLabel">Cliquez sur une méthode de paiement</h5>
+                  <!-- <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button> -->
+                  <button type="button" class="btn btn-close" data-dismiss="modal" aria-label="Close">
+                    <span class="material-icons">close</span>
+                  </button>
+
+                </div>
+
+                <div class="modal-body">
+
+                  <div class="row align-items-center">
+
+
+                    <div class="col align-self-center pr-0">
+
+                      <form class="form-horizontal" role="form" id="paypalForm" method="post" action="paiement/paynow">
+                  
+                        <input type="hidden" value="<%= vehicule._id %>" name="_id"/>
+                        <input type="hidden" value="<%= vehicule.num_plaque %>" name="num_plaque"/>
+                        <input type="hidden" value="<%= vehicule.prix %>" name="prix"/>
+                        
+                        <div class="col-8 mx-auto d-block align-middle" style="width: 50%; height: 50%;">
+                          <button type="submit" class="btn btn-primary mb-1">
+                            <img src="/img/paypal_logo2-nobg.png" alt="paypal logo" style="width: 20%; height: 20%;">
+                            <!--span class="material-icons">paid</span-->
+                            Paypal
+                          </button>
+                        </div>
+
+                      </form> 
+
+                      <form class="form-horizontal mb-1" role="form" id="stripeForm" method="post" action="#">
+                  
+                        <input type="hidden" value="<%= vehicule._id %>" name="_id"/>
+                        <input type="hidden" value="<%= vehicule.num_plaque %>" name="num_plaque"/>
+                        <input type="hidden" value="<%= vehicule.prix %>" name="prix"/>
+
+                        <div class="col-8 mx-auto align-middle" style="width: 50%; height: 50%;">
+
+                          <button type="submit" class="btn btn-primary" style="background-color: #6273E9;">
+                            <img src="/img/stripe_logo2-nobg.png" alt="paypal logo" style="background-color: transparent; width: 25%; height: 25%;">
+                            Stripe
+                          </button>
+
+                        </div>
+
+                      </form>
+
+                      <hr>
+
+                      <form class="form-horizontal mb-1" role="form" id="stripeForm" method="post" action="#">
+                  
+                        <input type="hidden" value="<%= vehicule._id %>" name="_id"/>
+                        <input type="hidden" value="<%= vehicule.num_plaque %>" name="num_plaque"/>
+                        <input type="hidden" value="<%= vehicule.prix %>" name="prix"/>
+
+                        <div class="col-8 mx-auto align-middle" style="width: 50%; height: 50%;">
+
+                          <button type="submit" class="btn btn-primary" style="background-color: #6273E9;">
+                            <img src="/img/stripe_logo2-nobg.png" alt="paypal logo" style="background-color: transparent; width: 25%; height: 25%;">
+                            Orange Money
+                          </button>
+
+                        </div>
+
+                      </form>
+
+                      <form class="form-horizontal mb-1" role="form" id="stripeForm" method="post" action="#">
+                  
+                        <input type="hidden" value="<%= vehicule._id %>" name="_id"/>
+                        <input type="hidden" value="<%= vehicule.num_plaque %>" name="num_plaque"/>
+                        <input type="hidden" value="<%= vehicule.prix %>" name="prix"/>
+
+                        <div class="col-8 mx-auto align-middle" style="width: 50%; height: 50%;">
+
+                          <button type="submit" class="btn btn-primary" style="background-color: #6273E9;">
+                            <img src="/img/stripe_logo2-nobg.png" alt="paypal logo" style="background-color: transparent; width: 25%; height: 25%;">
+                            M-Pesa
+                          </button>
+
+                        </div>
+
+                      </form>
+
+                      <form class="form-horizontal mb-1" role="form" id="stripeForm" method="post" action="#">
+                  
+                        <input type="hidden" value="<%= vehicule._id %>" name="_id"/>
+                        <input type="hidden" value="<%= vehicule.num_plaque %>" name="num_plaque"/>
+                        <input type="hidden" value="<%= vehicule.prix %>" name="prix"/>
+
+                        <div class="col-8 mx-auto align-middle" style="width: 50%; height: 50%;">
+
+                          <button type="submit" class="btn btn-primary" style="background-color: #6273E9;">
+                            <img src="/img/stripe_logo2-nobg.png" alt="paypal logo" style="background-color: transparent; width: 25%; height: 25%;">
+                            Airtel Money
+                          </button>
+
+                        </div>
+
+                      </form>
+
+                      <form class="form-horizontal mb-1" role="form" id="stripeForm" method="post" action="#">
+                  
+                        <input type="hidden" value="<%= vehicule._id %>" name="_id"/>
+                        <input type="hidden" value="<%= vehicule.num_plaque %>" name="num_plaque"/>
+                        <input type="hidden" value="<%= vehicule.prix %>" name="prix"/>
+
+                        <div class="col-8 mx-auto align-middle" style="width: 50%; height: 50%;">
+
+                          <button type="submit" class="btn btn-primary" style="background-color: #6273E9;">
+                            <img src="/img/stripe_logo2-nobg.png" alt="paypal logo" style="background-color: transparent; width: 25%; height: 25%;">
+                            Afri Money
+                          </button>
+
+                        </div>
+
+                      </form>
+
+              
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+  
+          </div-->

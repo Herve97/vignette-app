@@ -1,0 +1,109 @@
+<%- include('../_layouts/header.ejs') %>
+  <%- include('../_layouts/loader.ejs') %>
+
+    <!-- Begin page content -->
+    <main class="flex-shrink-0 main">
+
+      <!-- Fixed navbar -->
+      <header class="header">
+
+        <div class="row">
+
+          <div class="col-auto px-0">
+            <button class="menu-btn btn btn-40 btn-link back-btn" type="button">
+              <span class="material-icons">keyboard_arrow_left</span>
+            </button>
+          </div>
+              
+          <div class="text-left col align-self-center">
+            <a class="navbar-brand" href="#">
+              <h5 class="mb-0">Méthode de paiement</h5>
+            </a>
+          </div>
+
+          <%- include('../_layouts/headside.ejs') %>
+
+        </div>
+
+      </header>
+
+      <!-- page content start -->
+
+      <div class="main-container">
+
+        <div class="container">
+        
+          <div class="card">
+
+            <div class="card-body px-0">
+
+              <ul class="list-group list-group-flush">
+              
+                <li class="list-group-item">
+
+                  <div class="row align-items-center">
+
+
+                    <div class="col align-self-center pr-0">
+
+                      <form class="form-horizontal" role="form" id="paypalForm" method="post" action="paiement/paynow">
+                        <!--input type="hidden" value="<%= vehicule._id %>" name="_id"/>
+                        <input type="hidden" value="<%= vehicule.num_plaque %>" name="num_plaque"/>
+                        <input type="hidden" value="<%= vehicule.prix %>" name="prix"/-->
+                        <button type="submit" class="btn btn-primary">
+                          <span class="material-icons">paid</span>
+                          Paypal
+                        </button>
+                      </form>
+
+                      <form class="form-horizontal" role="form" id="paypalForm" method="post" action="paiement/paynow">
+                        <input type="hidden" value="<%= vehicule._id %>" name="_id"/>
+                        <input type="hidden" value="<%= vehicule.num_plaque %>" name="num_plaque"/>
+                        <input type="hidden" value="<%= vehicule.prix %>" name="prix"/>
+                        <button type="submit" class="btn btn-primary">
+                          <span class="material-icons">paid</span>
+                          Stripe
+                        </button>
+                      </form>
+
+                    </div>
+
+                  </div>
+
+                </li>
+               
+              </ul>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </main>
+
+
+    <!-- Required jquery and libraries -->
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- cookie js -->
+    <script src="/js/jquery.cookie.js"></script>
+
+    <!-- Swiper slider  js-->
+    <script src="/vendor/swiper/js/swiper.min.js"></script>
+
+    <!-- Customized jquery file  -->
+    <script src="/js/main.js"></script>
+    <script src="/js/color-scheme-demo.js"></script>
+
+
+    <!-- page level custom script -->
+    <script src="/js/app.js"></script>
+
+  </body>
+
+</html>

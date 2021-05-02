@@ -1,0 +1,145 @@
+<%- include('../_layouts/header.ejs') %>
+<%- include('../_layouts/loader.ejs') %>
+<%- include('../_layouts/sidebar.ejs') %>
+
+<!-- Begin page content -->
+<main class="flex-shrink-0 main has-footer">
+  <!-- Fixed navbar -->
+  <%- include('../_layouts/headprofile.ejs') %>
+
+  <div class="container mt-3 mb-4 text-center">
+    <h2 class="text-whiten intro">VIGNETTE-APP</h2>
+    <!--p class="text-white mb-4">Total Balance</p-->
+  </div>
+
+  <div class="main-container">
+    <!-- page content start -->
+
+    <div class="container mb-4 text-center">
+
+      <div class="card bg-default-secondary shadow-default">
+
+        <div class="card-body">
+          <!-- Swiper -->
+          <div class="swiper-container addsendcarousel text-center">
+
+            <div class="swiper-wrapper justify-content-around">
+
+              <a href="/paiement/vignette" class="swiper-slide text-white">
+                <div class="icon icon-50 rounded-circle mb-2 bg-white-light"><span class="material-icons">add</span></div>
+                <p><small>Vignette</small></p>
+              </a>
+
+              <a href="/vehicule/addvehicule" class="swiper-slide text-white">
+                <div class="icon icon-50 rounded-circle mb-2 bg-white-light"><span class="material-icons">class</span></div>
+                <p><small>Ajouter un Vehicule</small></p>
+              </a>
+
+              <!--div class="swiper-slide text-white">  
+                <button type="button" class="icon icon-50 rounded-circle mb-2 bg-white-light" data-toggle="modal" data-target="#staticBackdrop">
+                  <span class="material-icons">class</span>
+                </button>
+                <p><small>Ajouter un Véhicule</small></p>
+              </div-->
+
+
+              <a href="/paiement/getransaction" class="swiper-slide text-white">
+                <div class="icon icon-50 rounded-circle mb-2 bg-white-light"><span class="material-icons">receipt</span></div>
+                <p><small>Transactions</small></p>
+              </a>
+
+            </div>
+            <!-- Add Pagination -->
+            <!--div class="swiper-pagination"></div-->
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="container ">
+
+      <div class="row">
+
+        <div class="col text-center">
+          <h5 class="subtitle">Liste des véhicules</h5>
+          <!--p class="text-secondary">Take a look at our services</p-->
+        </div>
+
+      </div>
+
+
+      <div class="row text-center mt-3">
+        <% result.forEach(function(vehicule) { %>
+          <div class="col-6 col-md-3">
+                       
+            <div class="card border-0 mb-4">
+
+              <div class="card-body carv">
+
+                <div class="avatar avatar-100 bg-default-light text-default voiture">
+                  <% if(vehicule.pic == "") { %>
+                    <img id="noimage" src="/img/car.jpg">
+                  <% } else { %>
+                    <img id="noimage" src="/car_images/<%= vehicule.num_plaque %>/<%= vehicule.pic %>">
+                  <% } %>
+                  
+                </div>
+
+                <div>
+                  <h6 class="mt-2 mb-2 font-weight"><%= vehicule.marque %></h6>
+                  <div class="d-flex justify-content-around plaque">
+                    <div class="p-0 text-center">
+                      <p class="mb-0 text-secondary small"><%= vehicule.modele %></p>
+                    </div>
+                    <div class="p-0 text-center">
+                      <p class="mb-0 text-secondary small"><%= vehicule.num_plaque %></p>
+                    </div>
+                  </div>
+                  <p class="mb-0 text-secondary small prix"><%= vehicule.prix %>$</p>
+                </div>
+
+              </div>
+
+              <div class="card-footer">
+
+                <form class="form-horizontal" role="form" id="paypalForm" method="post" action="/paiement/paynow">
+                  
+                  <input type="hidden" value="<%= vehicule._id %>" name="_id"/>
+                  <input type="hidden" value="<%= vehicule.num_plaque %>" name="num_plaque"/>
+                  <input type="hidden" value="<%= vehicule.prix %>" name="prix"/>
+
+                  <button type="submit" class="btn btn-primary pr-3">
+                    <!--img src="/img/paypal_logo2-nobg.png" alt="paypal logo" style="width: 15%; height: 15%;"-->
+                    Payez
+                  </button>
+
+                </form> 
+
+              </div>
+
+            </div>
+
+          </div>
+
+        <% }); %> 
+      </div>
+
+    </div>
+
+  </div>
+
+</main>
+
+
+
+<%- include('../_layouts/footer.ejs') %>
+
+ <!--div class="icon icon-50 rounded-circle mb-2 bg-white-light">              
+</div-->
+
+<!--a href="transactions.html" class="swiper-slide text-white">
+</a-->

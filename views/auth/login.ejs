@@ -1,48 +1,106 @@
 <%- include('../_layouts/header.ejs') %>
-    <body class="bg-primary">
-        <div id="layoutAuthentication">
-            <div id="layoutAuthentication_content">
-                <main>
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-5">
-                                <div class="card shadow-lg border-0 rounded-lg mt-5">
-                                    <div class="card-header"><h3 class="text-center font-weight-light my-4">Connexion</h3></div>
-                                    <div class="card-body">
-                                        <form method="POST" action="/user/login">
-                                            <div class="form-group">
-                                                <label class="small mb-1" for="inputEmailAddress">Email</label>
-                                                <input class="form-control py-4" name="email" id="inputEmailAddress" type="text" placeholder="Entrez votre email" />
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="small mb-1" for="inputPassword">Mot de passe</label>
-                                                <input class="form-control py-4" id="inputPassword" name="password" type="password" placeholder="Entrer votre mot de passe" />
-                                            </div>
-                                            <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
-                                                
-                                                <button class="btn btn-primary">Se connecter</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="card-footer text-center">
-                                        <div class="small"><a href="register">Vous n'avez pas de compte? Inscrivez vous</a></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </main>
+    <%- include('../_layouts/loader.ejs') %>
+
+
+    <!-- Begin page content -->
+    <main class="flex-shrink-0 main has-footer">
+        <!-- Fixed navbar -->
+        <header class="header">
+            <div class="row">
+                <div class="col-auto px-0">
+                    <button class="menu-btn btn btn-40 btn-link back-btn" type="button">
+                        <span class="material-icons">keyboard_arrow_left</span>
+                    </button>
+                </div>
+                <div class="text-left col align-self-center">
+                   
+                </div>
+                <div class="ml-auto col-auto align-self-center">
+                    <a href="/user/register" class="text-white">
+                        Créer un compte
+                    </a>
+                </div>
             </div>
-            <div id="layoutAuthentication_footer">
+        </header>
+        
+        <div class="container">
+            
+            <div class="row justify-content-center">
+
+                <div class="col-lg-5">
+
+                    <div class="card shadow-lg border-0 rounded-lg mt-5" style="background: transparent;">
+                        
+                        <div class="card-header"><h3 class="text-center font-weight-light my-4 text-white">Connexion</h3></div>
+                        
+                        <div class="card-body">
+
+                            <form method="POST" action="/user/login" id="form-input" data-parsley-validate>
+
+                                <div class="form-group float-label active col-md-12">
+                                    <label class="small mb-1 text-white" for="inputEmailAddress">N° Téléphone</label>
+                                    <input class="form-control py-4 text-white" name="telephone" id="inputEmailAddress"
+                                     type="tel" placeholder="Entrez votre numéro de téléphone" required/>
+                                </div>
+
+                                <div class="form-group float-label active col-md-12">
+                                    <label class="small mb-1 text-white" for="inputPassword">Mot de passe</label>
+                                    <input class="form-control py-4 text-white" id="inputPassword"
+                                     name="password" type="password" placeholder="Entrer votre mot de passe" required/>
+                                </div>
+
+                                <div class="form-group text-center align-items-center mt-4 ml-10">
+                                    <button class="btn btn-primary">Se connecter</button>
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                        <!--div class="card-footer text-center">
+                            <div class="small"><a href="/user/register">Vous n'avez pas de compte? créer un compte</a></div>
+                        </div-->
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- footer-->
+    <!--div class="footer no-bg-shadow py-3">
+        <div class="row justify-content-center">
+            <div class="col">
+                <a href="login" class="btn btn-default rounded btn-block">Login</a>
+            </div>
+        </div>
+    </div-->
+
+
+    <!-- Required jquery and libraries -->
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- cookie js -->
+    <script src="/js/jquery.cookie.js"></script>
+
+    <!-- Swiper slider  js-->
+    <script src="/vendor/swiper/js/swiper.min.js"></script>
+
+    <!-- Customized jquery file  -->
+    <script src="/js/main.js"></script>
+    <script src="/js/color-scheme-demo.js"></script>
+
+
+    <!-- page level custom script -->
+    <script src="/js/app.js"></script>
+    
+</body>
+
+</html>
                
-
-<%- include('../_layouts/footer.ejs') %>
-
-<!--a class="small" href="password.html">Mot de passe oublié ?</a-->
-
-<!--div class="form-group">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input class="custom-control-input" id="rememberPasswordCheck" type="checkbox" />
-                                                    <label class="custom-control-label" for="rememberPasswordCheck">Garder ma session active</label>
-                                                </div>
-                                            </div-->

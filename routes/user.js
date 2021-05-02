@@ -29,4 +29,11 @@ router.get('/register', function(req, res){
   res.render('auth/register', { title: 'Register'});
 });
 
+router.get('/profile', userController.getProfile);
+
+router.get('/userimage', userController.getUserImage);
+
+router.get('/userimageside', userController.getUserImageside);
+router.get('/userimageside2', userController.getUserImageside2);
+
 module.exports = router;

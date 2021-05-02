@@ -4,6 +4,9 @@ const router = express.Router();
 const vehiculeController = require('../controllers/vehicule.controller');
 const auth = require('../config/auth');
 
+// GET add vehicule
+router.get('/addvehicule', auth.ensureAuthenticated, vehiculeController.getAddVehicule);
+
 //Post add vehicule
 router.post('/addvehicule', auth.ensureAuthenticated, vehiculeController.postVehicule);
 
@@ -17,7 +20,3 @@ router.put('/update', auth.ensureAuthenticated, vehiculeController.editVehicule)
 router.get('/getcarbyid', auth.ensureAuthenticated, vehiculeController.getVehiculeByUser);
 
 module.exports = router;
-
-/*
-
-*/

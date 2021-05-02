@@ -1,28 +1,56 @@
 
-            <div id="layoutSidenav_nav">
-                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                    <div class="sb-sidenav-menu">
-                        <div class="nav">
-                            
-                            <a class="nav-link" href="../home">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Liste des Véhicules
-                            </a>
+<!-- menu main -->
+    <div class="main-menu">
+        <div class="row mb-4 no-gutters">
+            <div class="col-auto"><button class="btn btn-link btn-40 btn-close text-white"><span class="material-icons">chevron_left</span></button></div>
+            <%- include('./headside2.ejs') %>
+        </div>
+        <div class="menu-container">
 
-                            <a class="nav-link" href="paiement/getransaction">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Transactions
-                            </a>
+            <ul class="nav nav-pills flex-column ">
+                <li class="nav-item">
+                    <a class="nav-link active" href="/home">
+                        <div>
+                            <span class="material-icons icon">account_balance</span>
+                            Accueil
                         </div>
-                    </div>
-                    
-                </nav>
-            </div>
+                        <span class="arrow material-icons">chevron_right</span>
+                    </a>
+                </li>
+                <!--li class="nav-item">
+                    <a class="nav-link" href="auth/analytics">
+                        <div>
+                            <span class="material-icons icon">insert_chart</span>
+                            Analytics
+                        </div>
+                        <span class="arrow material-icons">chevron_right</span>
+                    </a>
+                </li-->
 
-            <!--div class="sb-sidenav-menu-heading">Core</div>
-            <a class="nav-link" href="index.html">
-                <div class="sb-nav-link-icon">
-                    <i class="fas fa-tachometer-alt"></i>
-                </div>
-                Administration
-            </a-->
+                <li class="nav-item">
+                    <a class="nav-link" href="/paiement/getransaction">
+                        <div>
+                            <span class="material-icons icon">account_balance_wallet</span>
+                            Transactions
+                        </div>
+                        <span class="arrow material-icons">chevron_right</span>
+                    </a>
+                </li>
+                
+                <!--li class="nav-item">
+                    <a class="nav-link" href="setting.html">
+                        <div>
+                            <span class="material-icons icon">settings</span>
+                            Settings
+                        </div>
+                        <span class="arrow material-icons">chevron_right</span>
+                    </a>
+                </li-->
+                
+            </ul>
+            <div class="text-center">
+                <a href="/user/logout" class="btn btn-outline-danger text-white rounded my-3 mx-auto">Deconnexion</a>
+            </div>
+        </div>
+    </div>
+    <div class="backdrop"></div>

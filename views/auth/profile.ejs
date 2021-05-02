@@ -1,0 +1,83 @@
+<%- include('../_layouts/header.ejs') %>
+  <%- include('../_layouts/loader.ejs') %>
+  <%- include('../_layouts/sidebar.ejs') %>
+
+  <!-- Begin page content -->
+  <main class="flex-shrink-0 main has-footer">
+    <!-- Fixed navbar -->
+    <%- include('../_layouts/headprofile.ejs') %>
+
+    <!-- page content start -->
+    <div class="container-fluid px-0">
+    
+      <div class="card overflow-hidden">
+        <div class="card-body p-0 h-150">
+          <div class="background">
+            <img src="/img/image10.jpg" alt="" style="display: none;">
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="container-fluid top-70 text-center mb-4">
+      <div class="avatar avatar-140 rounded-circle mx-auto shadow">
+        <div class="background">
+          <!--img src="/img/user1.png" alt=""-->
+          <% if(user.avatar == "") { %>
+            <img id="noimage" src="/img/no_image1.png">
+          <% } else { %>
+            <img id="noimage" src="/user_avatar/<%= user._id %>/<%= user.avatar %>">
+          <% } %>
+        </div>
+      </div>
+    </div>
+
+    <div class="container mb-4 text-center text-white">
+      <h6 class="mb-1"> <%= user.prenom %> </h6>
+      <p><%= user.nom %></p>
+      <p class="mb-1"><%= user.email %></p>
+      <p><%= user.telephone %></p>
+    </div>
+
+    <div class="main-container">
+
+      <div class="container mb-4">
+          <div class="card">
+              <div class="card-header border-bottom">
+                  <h6 class="mb-0">Recent Transactions</h6>
+              </div>
+              <div class="card-body px-0 pt-0">
+                  <ul class="list-group list-group-flush">
+                    <% result.forEach(function(paiement) { %>
+                      <li class="list-group-item">
+
+                          <div class="row align-items-center">
+ 
+                              <div class="col align-self-center pr-0">
+                                <h6 class="font-weight-normal mb-1"><%= paiement.num_plaque %></h6>
+                                <p class="small text-secondary mb-0"><%= paiement.refPaiement %></p>
+                                <p class="small text-secondary mb-0">
+                                  <%= new Date(paiement.date_paiement).toLocaleDateString() %>, 
+                                  <%= new Date(paiement.date_paiement).toLocaleTimeString() %>
+                                </p>
+                              </div>
+        
+                              <div class="col-auto">
+                                <h6 class="text-success">$<%= paiement.cout %></h6>
+                              </div>
+
+                          </div>
+                      </li>
+                    <% }); %>
+                      
+                  </ul>
+              </div>
+          </div>
+      </div>
+
+    </div>
+
+  </main>
+
+<%- include('../_layouts/footer.ejs') %>

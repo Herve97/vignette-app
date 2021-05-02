@@ -4,11 +4,21 @@ const transactionController = require('../controllers/historique.controller');
 const auth = require('../config/auth');
 const passport = require('passport');
 
+// 
+
 // GET transaction
 router.get('/getransaction', auth.ensureAuthenticated, transactionController.getPaiement);
 
+// router.get('/methodepaiement', auth.ensureAuthenticated, transactionController.getMethodePaie);
+
+router.get('/recentTransaction', auth.ensureAuthenticated, transactionController.getRecentTransaction);
+
+router.get('/vignette', auth.ensureAuthenticated, transactionController.vignette);
+
 // Paynow
-router.post('/paynow', auth.ensureAuthenticated, transactionController.paynow);
+router.post('/paynow', transactionController.paynow);
+
+// router.post('/payment', transactionController.stripePaiement);
 
 /*
 * payment success url 

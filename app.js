@@ -1,20 +1,16 @@
+const express = require('express');
+const expressValidator = require('express-validator');
+var path = require('path');
+//const expressLayouts = require('express-ejs-layouts');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const session = require('express-session');
 const cookieParser = require('cookie-parser');
-const logger = require('morgan');
 const livereload = require("livereload");
 const connectLivereload = require("connect-livereload");
-const mongoose = require('mongoose');
-const expressValidator = require('express-validator');
-const bodyParser = require('body-parser');
-const expressLayouts = require('express-ejs-layouts');
 const passport = require('passport');
 const flash = require('connect-flash');
-const session = require('express-session');
 const fileUpload = require('express-fileupload');
-const underscore = require('underscore');
-const express = require('express');
-const User = require('./models/User');
-const jwt = require('jsonwebtoken');
-var path = require('path');
 
 const app = express();
 
@@ -40,6 +36,29 @@ mongoose
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.log(err));
 
+
+const publicDirectory = path.join(__dirname, 'public');
+var liveReloadServer = livereload.createServer();
+liveReloadServer.watch(publicDirectory);
+liveReloadServer.server.once("connection", () => {
+  setTimeout(() => {
+    liveReloadServer.refresh("/");
+  }, 100);
+});
+
+app.use(connectLivereload());
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+//pp.use(expressLayouts());
+app.set('view engine', 'ejs');
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(fileUpload());
+
+//app.use(logger('dev'));
+
+
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -55,22 +74,58 @@ app.use(
 );
 
 
-// View engine
-app.set('view engine', 'ejs');
+//Express Validator
+app.use(expressValidator({
+  errorFormatter: function(param, msg, value){
+    var namespace = param.split('.')
+    , root = namespace.shift()
+    , formParam = root;
 
-// Initialize the ejs template engine
-app.engine('html', require('ejs').renderFile);
+    while(namespace.lenght){
+      formParam += '[' + namespace.shift() + ']';
+    }
+    return{
+      param : formParam,
+      msg   : msg,
+      value : value
+    };
+  },
+  customValidators: {
+    isImage: function(value, filename){
+      var extension = (path.extname(filename)).toLowerCase();
+      switch(extension){
+        case '.jpg':
+          return '.jpg';
+        case '.jpeg':
+          return '.jpeg';
+        case '.png':
+          return '.png';
+        case '':
+          return '.jpg';
+        default:
+          return false;
+      }
+    }
+  }
+}));
 
-app.set('views', path.join(__dirname, 'views'));
 
-app.use(express.static(__dirname + '/public'));
+//Express messages
+app.use(require('connect-flash')());
+app.use(function (req, res, next) {
+  res.locals.messages = require('express-messages')(req, res);
+  next();
+});
+
 
 // Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
 
+
 // Connect flash
 app.use(flash());
+app.locals.errors = null;
 
 // Global variables
 app.use(function (req, res, next) {
@@ -78,6 +133,13 @@ app.use(function (req, res, next) {
   res.locals.error_msg = req.flash('error_msg');
   res.locals.error = req.flash('error');
   next();
+});
+
+//Express messages
+app.use(require('connect-flash')());
+app.use(function (req, res, next) {
+  res.locals.messages = require('express-messages')(req, res);
+  next(); 
 });
 
 app.get('*', function (req, res, next) {
@@ -105,19 +167,3 @@ app.listen(process.env.PORT || 3000, () => {
   console.log("I'm working well");
 });
 
-
-/*
-app.use(async (req, res, next) => {
-  if (req.headers["x-access-token"]) {
-    const accessToken = req.headers["x-access-token"];
-    const { userId, exp } = await jwt.verify(accessToken, 'secretfortoken');
-    // Check if token has expired
-    if (exp < Date.now().valueOf() / 1000) {
-      return res.status(401).json({ error: "JWT token has expired, please login to obtain a new one" });
-    }
-    res.locals.loggedInUser = await User.findById(userId); next();
-  } else {
-    next();
-  }
-});
-*/
