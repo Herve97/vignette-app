@@ -6,8 +6,6 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
-const livereload = require("livereload");
-const connectLivereload = require("connect-livereload");
 const passport = require('passport');
 const flash = require('connect-flash');
 const fileUpload = require('express-fileupload');
@@ -38,15 +36,7 @@ mongoose
 
 
 const publicDirectory = path.join(__dirname, 'public');
-var liveReloadServer = livereload.createServer();
-liveReloadServer.watch(publicDirectory);
-liveReloadServer.server.once("connection", () => {
-  setTimeout(() => {
-    liveReloadServer.refresh("/");
-  }, 100);
-});
 
-app.use(connectLivereload());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
